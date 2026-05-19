@@ -5,18 +5,20 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0-blue)](SKILL.md)
 
-> user provides CSV data and wants to generate a chart or visualization
+> Converts tabular CSV data into visual charts and graphs — bar, line, scatter, pie, and more
 
 ## What Problem This Solves
 
-Brief paragraph explaining the specific engineering problem this skill solves.
-When triggered: [trigger condition].
+User has raw CSV data and needs a visual chart — not more numbers to stare at. This skill parses the CSV structure, selects the right chart type for the data shape, and generates runnable code to render it. No more exporting to Excel just to make a simple chart.
+
+**When triggered:** CSV data + chart/graph/visualization intent.
 
 ## Features
 
-- Feature 1
-- Feature 2
-- Feature 3
+- **Intelligent chart selection** — picks the optimal chart type based on data shape (bar for categories, line for time-series, scatter for correlation, etc.)
+- **Auto column type detection** — identifies numeric, date, and category columns and maps them to axes correctly
+- **Multi-format output** — generates code in Python (matplotlib/plotly), JavaScript (chart.js/plotly.js), or Mermaid diagrams
+- **Handles edge cases** — warns about >7 pie slices, truncates >500 rows, skips missing values gracefully
 
 ## Quick Start
 
@@ -24,48 +26,56 @@ When triggered: [trigger condition].
 
 ```bash
 # Via ClawHub
-clawhub install Csv To Chart
+clawhub install csv-to-chart
 
 # Or manually
-cp -r Csv To Chart ~/.openclaw/skills/
+cp -r csv-to-chart ~/.openclaw/skills/
 ```
 
 ### Usage
 
-```bash
-# Mode 1
-clawhub run Csv To Chart --mode read
-
-# Mode 2
-clawhub run Csv To Chart --mode write --input ./data.json
 ```
+/csv-to-chart
+```
+
+Paste your CSV data and ask for a chart — e.g., "make a bar chart from this".
+
+```
+/csv-to-chart/suggest
+```
+
+Ask which chart type fits your data without generating it yet.
+
+## Modes
+
+| Mode | Description |
+|------|-------------|
+| `/csv-to-chart` | Default — reads CSV, outputs chart specification + runnable code |
+| `/csv-to-chart/suggest` | Recommends the best chart type based on your data shape |
+
+## Examples
+
+| Input | Output |
+|-------|--------|
+| Monthly sales CSV (month + revenue) | Line chart with month on X, revenue on Y |
+| Product categories + counts | Horizontal bar chart, top 10 + "Other" if >7 categories |
+| Two numeric columns | Scatter plot with axis labels |
+| CSV with 50 rows, missing Q3 | Chart rendered, note added: "3 rows omitted due to missing Q3 sales" |
 
 ## Directory Structure
 
 ```
-Csv To Chart/
+csv-to-chart/
 ├── SKILL.md          # Entry point
 ├── LICENSE           # MIT
 ├── README.md         # This file
 ├── README_zh.md      # Chinese version
 ├── CONTRIBUTING.md    # Contribution guide
 ├── .gitignore
-├── references/       # Templates and schemas
-│   └── ...
-└── scripts/          # Helper scripts (if any)
-    └── ...
+├── references/       # Chart type decision tree, code templates
+└── tests/            # Test framework
 ```
-
-## Configuration
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `API_KEY` | Yes | API key for the service |
 
 ## License
 
 This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
-
----
-
-Powered by [MiniMax](https://minimax.io).
